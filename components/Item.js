@@ -7,14 +7,14 @@ export default function Item({ itemData }) {
 	return (
 		<View style={styles.itemContainer}>
 			<View style={styles.nameContainer}>
-				<Text style={styles.itemName}>{itemData}</Text>
+				<Text style={styles.itemName}>{itemData.activity}</Text>
 				<Ionicons style={styles.warning} name="warning" size={24} color="orange" />
 			</View>
 			<View style = {styles.dateContainer}>
-				<Text>Date</Text>
+				<Text>{itemData.date}</Text>
 			</View>
 			<View style = {styles.timeCaloriesContainer}>
-				<Text>Time</Text>
+				<Text>{itemData.time}</Text>
 			</View>
 		</View>
 	)
