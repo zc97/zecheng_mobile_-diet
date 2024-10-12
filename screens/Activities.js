@@ -12,7 +12,7 @@ export default function Activities({ navigation }) {
 					<Button
 						title='add'
 						onPress={() => {
-              navigation.navigate('AddActivity')
+              navigation.navigate('Add An Activity')
 						}}
 					/>
 				)

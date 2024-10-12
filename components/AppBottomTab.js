@@ -69,7 +69,7 @@ function ActivityStack() {
           component={Activities}
         />
         <Stack.Screen 
-          name="AddActivity" 
+          name="Add An Activity" 
           component={AddActivity} 
         />
       </Stack.Navigator>
