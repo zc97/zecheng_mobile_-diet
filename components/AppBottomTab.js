@@ -8,7 +8,7 @@ import AppStyles from '../styles/AppStyles';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddActivity from '../screens/AddActivity';
 import AddDiet from '../screens/AddDiet';
-
+import { ActivitiesProvider } from '../contexts/ActivitiesContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -52,26 +52,28 @@ export default function AppBottomTab() {
 
 function ActivityStack() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: AppStyles.mainColor,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}
-    >
-      <Stack.Screen 
-        name="Activities" 
-        component={Activities}
-      />
-      <Stack.Screen 
-        name="AddActivity" 
-        component={AddActivity} 
-      />
-    </Stack.Navigator>
+    <ActivitiesProvider>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: AppStyles.mainColor,
+          },
+          headerTintColor: 'white',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <Stack.Screen 
+          name="Activities" 
+          component={Activities}
+        />
+        <Stack.Screen 
+          name="AddActivity" 
+          component={AddActivity} 
+        />
+      </Stack.Navigator>
+    </ActivitiesProvider>
   );
 }
 

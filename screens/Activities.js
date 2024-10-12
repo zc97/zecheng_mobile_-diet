@@ -1,9 +1,10 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
-import React, {useLayoutEffect} from 'react'
+import React, {useLayoutEffect, useState, useContext} from 'react'
 import ItemList from '../components/ItemList'
 
+
 export default function Activities({ navigation }) {
-  
+
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerRight: () => {
