@@ -1,0 +1,35 @@
+import { StyleSheet, Text, View, Pressable } from 'react-native'
+import React from 'react'
+import AppStyles from '../styles/AppStyles'
+
+export default function PressableButton({ children, pressedFunction, componentStyle, componentPressedStyle}) {
+	return (
+		<Pressable 
+			style={({ pressed }) => {return [
+				styles.defaultStyle,
+				componentStyle,
+				pressed ? styles.defultPressedStyle : null,
+				pressed ? componentPressedStyle : null,
+			]}}
+			onPress={pressedFunction}
+		>
+			<View>
+				{children}
+			</View>
+		</Pressable>
+	)
+}
+
+const styles = StyleSheet.create({
+	defaultStyle: {
+		borderRadius: 5,
+		padding: 8,
+		margin: 5,
+		backgroundColor: AppStyles.mainColor,
+		alignItems: 'center',
+	},
+	defultPressedStyle: {
+		backgroundColor: 'gray',
+		opacity: 0.7,
+	}
+})
