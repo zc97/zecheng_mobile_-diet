@@ -1,7 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Button } from 'react-native'
+import React, {useLayoutEffect} from 'react'
 
-export default function Diet() {
+
+export default function Diet({ navigation }) {
+
+  useLayoutEffect(() => {
+		navigation.setOptions({
+			headerRight: () => {
+				return (
+					<Button
+						title='add'
+						onPress={() => {
+							navigation.navigate('AddDiet')
+						}}
+					/>
+				)
+			}
+		})
+	}, [navigation])
+
   return (
     <View>
       <Text>Diet</Text>
