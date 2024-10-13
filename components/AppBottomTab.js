@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, {useContext} from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Activities from '../screens/Activities';
@@ -16,8 +16,8 @@ import Setting from '../screens/Setting';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-
 export default function AppBottomTab() {
+  
   return (
     <Tab.Navigator
       screenOptions={{
@@ -77,7 +77,7 @@ function ActivityStack() {
           },
         }}
       >
-        <Stack.Screen 
+        <Stack.Screen
           name="Activities" 
           component={Activities}
         />

@@ -6,19 +6,13 @@ import { ActivitiesContext } from '../contexts/ActivitiesContext'
 
 export default function ItemList({ type }) {
 	const { activities, setActivities } = useContext(ActivitiesContext);
-	
+
 	return (
-		<View>
-			<FlatList
-				data={activities}
-				renderItem={({ item }) => <Item itemData={item}/>}
-			/>
-		</View>
+		<FlatList
+			data={activities}
+			renderItem={({ item }) => <Item itemData={item}/>}
+		/>
 	) 
 }
 
-const styles = StyleSheet.create({
-	itemList: {
-		flexDirection: "row",
-	}
-})
+const styles = StyleSheet.create({})

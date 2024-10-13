@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Button, StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 import PressableButton from '../components/pressableButton'
 import { ThemeContext } from '../contexts/ThemeContext'
@@ -10,9 +10,7 @@ export default function Setting() {
 	return (
 		<View>
 			<PressableButton
-				onPress={() => {
-					toggleTheme()
-				}}
+				pressedFunction={() => (toggleTheme())}
 			>
 				<Text>Toggle Theme </Text>
 			</PressableButton>

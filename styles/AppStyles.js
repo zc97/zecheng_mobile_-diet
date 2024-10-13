@@ -3,4 +3,6 @@ export default {
 	themeColor: '#4E397E',
 	lightBackgroundColor: 'beige',
 	lightTextColor: 'black',
+	darkBackgroundColor: 'gray',
+	darkTextColor: 'white',
 };
