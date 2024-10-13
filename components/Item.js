@@ -23,7 +23,7 @@ export default function Item({ itemData }) {
 const styles = StyleSheet.create({
 	itemContainer: {
 		flexDirection: 'row',
-		backgroundColor: AppStyles.mainColor,
+		backgroundColor: AppStyles.themeColor,
 		alignItems: "center",
 		borderWidth: 1,
 		marginHorizontal: 20,

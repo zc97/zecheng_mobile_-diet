@@ -4,11 +4,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Activities from '../screens/Activities';
 import Diet from '../screens/Diet';
-import AppStyles from '../styles/AppStyles';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddActivity from '../screens/AddActivity';
 import AddDiet from '../screens/AddDiet';
 import { ActivitiesProvider } from '../contexts/ActivitiesContext';
+import AppStyles from '../styles/AppStyles';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import Setting from '../screens/Setting';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -19,7 +22,7 @@ export default function AppBottomTab() {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: AppStyles.mainColor,
+          backgroundColor: AppStyles.themeColor,
         },
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'gray',
@@ -46,6 +49,16 @@ export default function AppBottomTab() {
           ),
         }}
       />
+      <Tab.Screen
+        name="SettingStack"
+        component={SettingStack}
+        options={{
+          tabBarLabel: 'Setting',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings" size={24} color="white" />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -56,7 +69,7 @@ function ActivityStack() {
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
-            backgroundColor: AppStyles.mainColor,
+            backgroundColor: AppStyles.themeColor,
           },
           headerTintColor: 'white',
           headerTitleStyle: {
@@ -82,7 +95,7 @@ function DietStack() {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: AppStyles.mainColor,
+          backgroundColor: AppStyles.themeColor,
         },
         headerTintColor: 'white',
         headerTitleStyle: {
@@ -103,10 +116,31 @@ function DietStack() {
 }
 
 
+function SettingStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: AppStyles.themeColor,
+        },
+        headerTintColor: 'white',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
+      <Stack.Screen 
+        name="Setting" 
+        component={Setting}
+      />
+    </Stack.Navigator>
+  );
+}
+
 const styles = StyleSheet.create({
   header: {
     headerStyle: {
-      backgroundColor: AppStyles.mainColor,
+      backgroundColor: AppStyles.themeColor,
     },
     headerTintColor: 'white',
     headerTitleStyle: {

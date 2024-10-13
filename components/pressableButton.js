@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		padding: 8,
 		margin: 5,
-		backgroundColor: AppStyles.mainColor,
+		backgroundColor: AppStyles.themeColor,
 		alignItems: 'center',
 	},
 	defultPressedStyle: {

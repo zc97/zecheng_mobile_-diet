@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		marginHorizontal: 5,
 		fontWeight: 'bold',
-		color: AppStyles.mainColor,
+		color: AppStyles.themeColor,
 	},
 	inputField: {
 		marginHorizontal: 5,
