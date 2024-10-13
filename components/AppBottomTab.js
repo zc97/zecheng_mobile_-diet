@@ -11,7 +11,7 @@ import { ActivitiesProvider } from '../contexts/ActivitiesContext';
 import AppStyles from '../styles/AppStyles';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Setting from '../screens/Setting';
-
+import { DietProvider } from '../contexts/DietContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -92,26 +92,28 @@ function ActivityStack() {
 
 function DietStack() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: AppStyles.themeColor,
-        },
-        headerTintColor: 'white',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}
-    >
-      <Stack.Screen 
-        name="Diet" 
-        component={Diet}
-      />
-      <Stack.Screen 
-        name="AddDiet" 
-        component={AddDiet} 
-      />
-    </Stack.Navigator>
+    <DietProvider>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: AppStyles.themeColor,
+          },
+          headerTintColor: 'white',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <Stack.Screen 
+          name="Diet" 
+          component={Diet}
+        />
+        <Stack.Screen 
+          name="AddDiet" 
+          component={AddDiet} 
+        />
+      </Stack.Navigator>
+    </DietProvider>
   );
 }
 
