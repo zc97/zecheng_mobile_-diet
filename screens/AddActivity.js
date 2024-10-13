@@ -2,13 +2,14 @@ import { StyleSheet, Text, View, Button, TextInput, Pressable, Alert } from 'rea
 import React, { useState, useContext } from 'react'
 import { ActivitiesContext } from '../contexts/ActivitiesContext'
 import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 export default function AddActivity({ navigation }) {
 	const { activities, setActivities } = useContext(ActivitiesContext);
+  const { theme } = useContext(ThemeContext)
 
 	const [open, setOpen] = useState(false);
 	const [activity, setActivity] = useState(null);
@@ -44,7 +45,7 @@ export default function AddActivity({ navigation }) {
 	}
 
 	return (
-		<View style={styles.addActivityContainer}>
+		<View style={[styles.addActivityContainer, {backgroundColor: theme.backgroundColor}]}>
 			<Text style={styles.inputLabel}>Select An Activity</Text>
 				<DropDownPicker
 					open={open}
@@ -70,7 +71,7 @@ export default function AddActivity({ navigation }) {
 				<PressableButton
 					pressedFunction={handleSaveActivity}
 				>
-					<Text>Save</Text>
+					<Text style={styles.buttonText}>Save</Text>
 				</PressableButton>
 				<PressableButton
 					pressedFunction={() => navigation.goBack()}
@@ -106,5 +107,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		marginTop: 20,
+	},
+	buttonText: {
+		color: AppStyles.pressableButtonFontColor,
 	}
 })

@@ -5,4 +5,5 @@ export default {
 	lightTextColor: 'black',
 	darkBackgroundColor: 'gray',
 	darkTextColor: 'white',
+	pressableButtonFontColor: 'white',
 };

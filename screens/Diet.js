@@ -1,9 +1,12 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
-import React, {useLayoutEffect} from 'react'
+import React, {useLayoutEffect, useContext} from 'react'
+import ItemList from '../components/ItemList'
+import { ThemeContext } from '../contexts/ThemeContext'
 
 
 export default function Diet({ navigation }) {
-
+  const { theme } = useContext(ThemeContext)
+  
   useLayoutEffect(() => {
 		navigation.setOptions({
 			headerRight: () => {
@@ -20,10 +23,14 @@ export default function Diet({ navigation }) {
 	}, [navigation])
 
   return (
-    <View>
-      <Text>Diet</Text>
+    <View style={[styles.dietContainer, {backgroundColor: theme.backgroundColor}]}>
+      <ItemList type = 'diet'/>
     </View>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  dietContainer: {
+    flex: 1,
+  },
+})

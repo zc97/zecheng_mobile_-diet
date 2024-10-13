@@ -24,7 +24,7 @@ export default function Activities({ navigation }) {
 
   return (
     <SafeAreaView style={[styles.activitiesContainer, {backgroundColor: theme.backgroundColor}]}>
-      <ItemList/>
+      <ItemList type='activities'/>
     </SafeAreaView>
   )
 }

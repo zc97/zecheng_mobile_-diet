@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View, Button, TextInput, Pressable, Alert } from 'react-native'
 import React, { useState, useContext } from 'react'
-import DropDownPicker from 'react-native-dropdown-picker';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
 import { DietContext } from '../contexts/DietContext';
+import { ThemeContext } from '../contexts/ThemeContext';
 
 export default function AddDiet({ navigation }) {
 	const { diet, setDiet } = useContext(DietContext);
+	const { theme } = useContext(ThemeContext);
 
 	const [description, setDescription] = useState('');
 	const [calories, setCalories] = useState('');
@@ -35,7 +35,7 @@ export default function AddDiet({ navigation }) {
 	}
 
 	return (
-		<View style={styles.addDeitContainer}>
+		<View style={[styles.addDeitContainer, {backgroundColor: theme.backgroundColor}]}>
 			<Text style={styles.inputLabel}>Description *</Text>
 				<TextInput
 					style={styles.descriptionInputField}

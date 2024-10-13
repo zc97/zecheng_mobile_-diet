@@ -4,18 +4,18 @@ import AppStyles from '../styles/AppStyles'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 
-export default function Item({ itemData }) {
+export default function Item({ itemData, type }) {
 	return (
 		<View style={styles.itemContainer}>
 			<View style={styles.nameContainer}>
-				<Text style= {styles.itemName}>{itemData.activity}</Text>
+				<Text style= {styles.itemName}>{(type === 'activity') ? itemData.activity : itemData.description}</Text>
 				<Ionicons style={styles.warning} name="warning" size={24} color="orange" />
 			</View>
 			<View style = {styles.dateContainer}>
 				<Text>{itemData.date}</Text>
 			</View>
 			<View style = {styles.timeCaloriesContainer}>
-				<Text>{itemData.time}</Text>
+				<Text>{(type === 'activity') ? itemData.time : itemData.calories}</Text>
 			</View>
 		</View>
 	)

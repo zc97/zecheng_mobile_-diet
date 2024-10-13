@@ -8,7 +8,7 @@ export default function Setting() {
 	const { theme, toggleTheme } = useContext(ThemeContext)
 	
 	return (
-		<View>
+		<View style={[styles.settingContainer, {backgroundColor: theme.backgroundColor}]}>
 			<PressableButton
 				pressedFunction={() => (toggleTheme())}
 			>
@@ -18,4 +18,10 @@ export default function Setting() {
 	)
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+	settingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	}
+})
