@@ -5,6 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
+import DateTimeSelector from '../components/DateTimeSelector';
 
 export default function AddActivity({ navigation }) {
 	const { activities, setActivities } = useContext(ActivitiesContext);
@@ -20,20 +21,11 @@ export default function AddActivity({ navigation }) {
 	]);
 
 	const [duration, setDuration] = useState(null);
-
 	const [date, setDate] = useState(new Date());
-	const [show, setShow] = useState(false);
-
-	const onChangeDate = (event, selectedDate) => {
-		const currentDate = selectedDate;
-		setDate(currentDate);
-	};
-
 
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);
 	}
-
 
 	const handleSaveActivity = () => {
 		if (!activity || !isNumber(duration) || !date) {
@@ -50,7 +42,6 @@ export default function AddActivity({ navigation }) {
 			])
 		navigation.navigate('Activities')
 	}
-
 
 	return (
 		<View style={styles.addActivityContainer}>
@@ -73,23 +64,7 @@ export default function AddActivity({ navigation }) {
 				keyboardType="numeric"
 			/>
 
-			<Text style={styles.inputLabel}>Date</Text>
-			<TextInput
-				style={styles.inputField}
-				value={date.toDateString()}
-				editable={false}
-				onPressIn={() => setShow(show ? false : true)}
-			/>
-
-			{show && (
-				<DateTimePicker
-					testID="dateTimePicker"
-					value={date}
-					mode={'date'}
-					display="inline"
-					onChange={onChangeDate}
-				/>
-			)}
+			<DateTimeSelector date={date} setDate={setDate}></DateTimeSelector>
 
 			<View style={styles.buttonContainer}>
 				<PressableButton
