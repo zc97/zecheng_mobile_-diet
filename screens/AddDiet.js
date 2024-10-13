@@ -36,7 +36,7 @@ export default function AddDiet({ navigation }) {
 
 	return (
 		<View style={[styles.addDeitContainer, {backgroundColor: theme.backgroundColor}]}>
-			<Text style={styles.inputLabel}>Description *</Text>
+			<Text style={[styles.inputLabel, {color: theme.textColor}]}>Description *</Text>
 				<TextInput
 					style={styles.descriptionInputField}
 					value={description}
@@ -44,7 +44,7 @@ export default function AddDiet({ navigation }) {
 					multiline={true}
 				/>
 
-			<Text style={styles.inputLabel}>Calories *</Text>
+			<Text style={[styles.inputLabel, {color: theme.textColor}]}>Calories *</Text>
 			<TextInput
 				style={styles.durationInputField}
 				value={calories}
@@ -59,12 +59,12 @@ export default function AddDiet({ navigation }) {
 				<PressableButton
 					pressedFunction={handleSaveDiet}
 				>
-					<Text>Save</Text>
+					<Text style={styles.buttonText}>Save</Text>
 				</PressableButton>
 				<PressableButton
 					pressedFunction={() => navigation.goBack()}
 				>
-					<Text>Cancel</Text>
+					<Text style={styles.buttonText}>Cancel</Text>
 				</PressableButton>
 			</View>
 
@@ -103,5 +103,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		marginTop: 20,
+	},
+	buttonText: {
+		color: AppStyles.pressableButtonFontColor,
 	}
 })

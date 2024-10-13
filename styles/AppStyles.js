@@ -2,7 +2,7 @@
 export default {
 	themeColor: '#4E397E',
 	lightBackgroundColor: 'beige',
-	lightTextColor: 'black',
+	lightTextColor: '#4E397E',
 	darkBackgroundColor: 'gray',
 	darkTextColor: 'white',
 	pressableButtonFontColor: 'white',

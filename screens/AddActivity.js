@@ -46,7 +46,7 @@ export default function AddActivity({ navigation }) {
 
 	return (
 		<View style={[styles.addActivityContainer, {backgroundColor: theme.backgroundColor}]}>
-			<Text style={styles.inputLabel}>Select An Activity</Text>
+			<Text style={[styles.inputLabel, {color: theme.textColor}]}>Select An Activity *</Text>
 				<DropDownPicker
 					open={open}
 					value={activity}
@@ -56,7 +56,7 @@ export default function AddActivity({ navigation }) {
 					setItems={setItems}
 				/>
 
-			<Text style={styles.inputLabel}>Duration (min)</Text>
+			<Text style={[styles.inputLabel, {color: theme.textColor}]}>Duration (min)  *</Text>
 			<TextInput
 				style={styles.inputField}
 				value={duration}
@@ -76,7 +76,7 @@ export default function AddActivity({ navigation }) {
 				<PressableButton
 					pressedFunction={() => navigation.goBack()}
 				>
-					<Text>Cancel</Text>
+					<Text style={styles.buttonText}>Cancel</Text>
 				</PressableButton>
 			</View>
 

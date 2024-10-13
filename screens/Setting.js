@@ -2,6 +2,7 @@ import { Button, StyleSheet, Text, View } from 'react-native'
 import React, { useContext } from 'react'
 import PressableButton from '../components/pressableButton'
 import { ThemeContext } from '../contexts/ThemeContext'
+import AppStyles from '../styles/AppStyles'
 
 
 export default function Setting() {
@@ -12,7 +13,7 @@ export default function Setting() {
 			<PressableButton
 				pressedFunction={() => (toggleTheme())}
 			>
-				<Text>Toggle Theme </Text>
+				<Text style={styles.buttonText}>Toggle Theme</Text>
 			</PressableButton>
 		</View>
 	)
@@ -23,5 +24,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+	},
+	buttonText:{
+		color: AppStyles.pressableButtonFontColor,
 	}
 })

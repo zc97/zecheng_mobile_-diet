@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, TextInput } from 'react-native'
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import AppStyles from '../styles/AppStyles';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 export default function DateTimeSelector({ date, setDate }) {
+    const { theme } = useContext(ThemeContext);
 
     const [show, setShow] = useState(false);
 
@@ -15,7 +16,7 @@ export default function DateTimeSelector({ date, setDate }) {
 
     return (
         <View>
-            <Text style={styles.label}>Date</Text>
+            <Text style={[styles.label, {color: theme.textColor}]}>Date *</Text>
             <TextInput
                 style={styles.inputField}
                 value={date.toDateString()}
