@@ -7,6 +7,7 @@ import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
 import { ThemeContext } from '../contexts/ThemeContext';
 
+// Screen that allows the user to add an activity
 export default function AddActivity({ navigation }) {
 	const { activities, setActivities } = useContext(ActivitiesContext);
   const { theme } = useContext(ThemeContext)
@@ -30,7 +31,9 @@ export default function AddActivity({ navigation }) {
 		return /^\d+$/.test(value);
 	}
 
+	// Save the activity item to the activity list
 	const handleSaveActivity = () => {
+		// Check if all values are valid
 		if (!activity || !isNumber(duration) || !date) {
 			Alert.alert(title = 'Invalid Input', messafe = 'Please check your input values');
 			return;
@@ -67,6 +70,7 @@ export default function AddActivity({ navigation }) {
 				keyboardType="numeric"
 			/>
 
+			{/* Display the customized DateTimeSelector component */}
 			<DateTimeSelector date={date} setDate={setDate}></DateTimeSelector>
 
 			<View style={styles.buttonContainer}>

@@ -3,10 +3,11 @@ import React, {useState, useContext, useEffect} from 'react'
 import AppStyles from '../styles/AppStyles'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-
+// Component that displays an item (activity or diet item)
 export default function Item({ itemData, type }) {
 	const[ warn, setWarn ] = useState(false);
 
+	// Check if the item should be warned
 	useEffect(() => {
 		if (type === 'activity' &&
 			parseInt(itemData.time.replace(' mins', '')) > 60 && 
@@ -22,6 +23,7 @@ export default function Item({ itemData, type }) {
 	return (
 		<View style={styles.itemContainer}>
 			<View style={styles.nameContainer}>
+				{/* Display the item info by its type */}
 				<Text style= {styles.itemName}>{(type === 'activity') ? itemData.activity : itemData.description}</Text>
 				{warn && <Ionicons style={styles.warning} name="warning" size={24} color="orange" />}
 			</View>

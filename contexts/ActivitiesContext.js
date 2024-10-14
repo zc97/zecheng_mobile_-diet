@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 
+// Create the activities context that stores the activities data
 const ActivitiesContext = createContext();
 
 const ActivitiesProvider = ({ children }) => {

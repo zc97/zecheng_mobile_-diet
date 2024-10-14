@@ -4,8 +4,9 @@ import PressableButton from '../components/pressableButton'
 import { ThemeContext } from '../contexts/ThemeContext'
 import AppStyles from '../styles/AppStyles'
 
-
+// A simple screen that allows the user to toggle between light and dark mode
 export default function Setting() {
+	
 	const { theme, toggleTheme } = useContext(ThemeContext)
 	
 	return (

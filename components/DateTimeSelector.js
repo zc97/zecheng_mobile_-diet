@@ -4,11 +4,13 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import AppStyles from '../styles/AppStyles';
 import { ThemeContext } from '../contexts/ThemeContext';
 
+// Component that allows the user to select a date and time
 export default function DateTimeSelector({ date, setDate }) {
     const { theme } = useContext(ThemeContext);
 
     const [show, setShow] = useState(false);
 
+    // Function that changes the date based on the user's selection
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDate(currentDate);

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Pressable } from 'react-native'
 import React from 'react'
 import AppStyles from '../styles/AppStyles'
 
+// Customized pressable button component
 export default function PressableButton({ children, pressedFunction, componentStyle, componentPressedStyle}) {
 	return (
 		<Pressable 

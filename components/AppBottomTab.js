@@ -13,12 +13,16 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Setting from '../screens/Setting';
 import { DietProvider } from '../contexts/DietContext';
 
+// Create a bottom tab navigator
 const Tab = createBottomTabNavigator();
+// Create a stack navigator
 const Stack = createNativeStackNavigator();
 
+
+// Component that displays the bottom tab navigator
 export default function AppBottomTab() {
-  
   return (
+    // Create a bottom tab navigator with three tabs
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
@@ -29,6 +33,7 @@ export default function AppBottomTab() {
         headerShown: false,
       }}
     >
+      {/* First tab: ActivityStack for actvity screen*/}
       <Tab.Screen
         name="ActivityStack"
         component={ActivityStack}
@@ -39,6 +44,8 @@ export default function AppBottomTab() {
           ),
         }}
       />
+
+      {/* Second tab: DietStack for diet screen*/}
       <Tab.Screen
         name="DietStack"
         component={DietStack}
@@ -49,6 +56,8 @@ export default function AppBottomTab() {
           ),
         }}
       />
+
+      {/* Third tab: SettingStack for setting screen*/}
       <Tab.Screen
         name="SettingStack"
         component={SettingStack}

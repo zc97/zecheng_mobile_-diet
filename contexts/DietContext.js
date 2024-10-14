@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 
+// Create the diet context that stores the diets data
 const DietContext = createContext();
 
 const DietProvider = ({ children }) => {

@@ -6,6 +6,7 @@ import DateTimeSelector from '../components/DateTimeSelector';
 import { DietContext } from '../contexts/DietContext';
 import { ThemeContext } from '../contexts/ThemeContext';
 
+// Screen that allows the user to add a diet
 export default function AddDiet({ navigation }) {
 	const { diet, setDiet } = useContext(DietContext);
 	const { theme } = useContext(ThemeContext);
@@ -18,7 +19,9 @@ export default function AddDiet({ navigation }) {
 		return /^\d+$/.test(value);
 	}
 
+	// Save the diet item to the diet list
 	const handleSaveDiet = () => {
+		// Check if all values are valid
 		if (!description || !isNumber(calories) || !date) {
 			Alert.alert(title = 'Invalid Input', messafe = 'Please check your input values');
 			return;
@@ -53,6 +56,7 @@ export default function AddDiet({ navigation }) {
 				keyboardType="numeric"
 			/>
 
+			{/* Display the customized DateTimeSelector component */}
 			<DateTimeSelector date={date} setDate={setDate}></DateTimeSelector>
 
 			<View style={styles.buttonContainer}>
