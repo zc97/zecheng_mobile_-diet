@@ -23,7 +23,6 @@ export default function DateTimeSelector({ date, setDate }) {
                 editable={false}
                 onPressIn={() => setShow(show ? false : true)}
             />
-
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"

@@ -1,15 +1,29 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, {useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import AppStyles from '../styles/AppStyles'
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 export default function Item({ itemData, type }) {
+	const[ warn, setWarn ] = useState(false);
+
+	useEffect(() => {
+		if (type === 'activity' &&
+			parseInt(itemData.time.replace(' mins', '')) > 60 && 
+			(itemData.activity === 'Running' || itemData.activity === 'Weights')) {
+				setWarn(true);
+		}
+		if (type === 'diet' &&
+			parseInt(itemData.calories) > 800) {
+				setWarn(true);
+		}
+	}, [warn])
+
 	return (
 		<View style={styles.itemContainer}>
 			<View style={styles.nameContainer}>
 				<Text style= {styles.itemName}>{(type === 'activity') ? itemData.activity : itemData.description}</Text>
-				<Ionicons style={styles.warning} name="warning" size={24} color="orange" />
+				{warn && <Ionicons style={styles.warning} name="warning" size={24} color="orange" />}
 			</View>
 			<View style = {styles.dateContainer}>
 				<Text>{itemData.date}</Text>

@@ -10,12 +10,14 @@ import { ThemeContext } from '../contexts/ThemeContext';
 export default function AddActivity({ navigation }) {
 	const { activities, setActivities } = useContext(ActivitiesContext);
   const { theme } = useContext(ThemeContext)
-
+	
 	const [open, setOpen] = useState(false);
 	const [activity, setActivity] = useState(null);
 	const [items, setItems] = useState([
 		{ label: 'Walking', value: 'Walking' },
 		{ label: 'Running', value: 'Running' },
+		{ label: 'Swimming', value: 'Swimming' },
+		{ label: 'Weights', value: 'Weights' },
 		{ label: 'Yoga', value: 'Yoga' },
 		{ label: 'Cycling', value: 'Cycling' },
 		{ label: 'Hiking', value: 'Hiking' },
