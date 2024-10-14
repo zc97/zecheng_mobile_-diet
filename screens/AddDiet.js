@@ -100,9 +100,11 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 	},
 	buttonContainer: {
+		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-		marginTop: 20,
+		alignItems: 'flex-end',
+		marginBottom: 30,
 	},
 	buttonText: {
 		color: AppStyles.pressableButtonFontColor,

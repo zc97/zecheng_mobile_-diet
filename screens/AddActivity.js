@@ -10,7 +10,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 export default function AddActivity({ navigation }) {
 	const { activities, setActivities } = useContext(ActivitiesContext);
   const { theme } = useContext(ThemeContext)
-	
+
 	const [open, setOpen] = useState(false);
 	const [activity, setActivity] = useState(null);
 	const [items, setItems] = useState([
@@ -106,9 +106,11 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 	},
 	buttonContainer: {
+		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-		marginTop: 20,
+		alignItems: 'flex-end',
+		marginBottom: 30,
 	},
 	buttonText: {
 		color: AppStyles.pressableButtonFontColor,
