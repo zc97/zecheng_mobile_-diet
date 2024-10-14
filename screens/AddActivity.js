@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'flex-end',
-		marginBottom: 30,
 	},
 	buttonText: {
 		color: AppStyles.pressableButtonFontColor,
