@@ -14,6 +14,7 @@ export default function DateTimeSelector({ date, setDate }) {
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDate(currentDate);
+        setShow(false);
     };
 
     return (
@@ -22,7 +23,7 @@ export default function DateTimeSelector({ date, setDate }) {
             <TextInput
                 style={styles.inputField}
                 value={date.toDateString()}
-                editable={false}
+                // editable={false}
                 onPressIn={() => setShow(show ? false : true)}
             />
             {show && (
