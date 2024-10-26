@@ -6,4 +6,6 @@ export default {
 	darkBackgroundColor: 'gray',
 	darkTextColor: 'white',
 	pressableButtonFontColor: 'white',
+	lightTabIconColor: 'white',
+	darkTabIconColor: 'gray',
 };

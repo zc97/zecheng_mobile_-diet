@@ -9,6 +9,7 @@ const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState({
     backgroundColor: AppStyles.lightBackgroundColor,
     textColor: AppStyles.lightTextColor,
+    iconColor: AppStyles.lightTabIconColor,
   });
 
   // Toggle between light and dark theme
@@ -17,11 +18,13 @@ const ThemeProvider = ({ children }) => {
       setTheme({
         backgroundColor: AppStyles.darkBackgroundColor,
         textColor: AppStyles.darkTextColor,
+        iconColor: AppStyles.darkTabIconColor,
       });
     } else {
       setTheme({
         backgroundColor: AppStyles.lightBackgroundColor,
         textColor: AppStyles.lightTextColor,
+        iconColor: AppStyles.lightTabIconColor,
       });
     }
   }

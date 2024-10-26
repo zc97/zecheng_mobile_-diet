@@ -13,6 +13,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Setting from '../screens/Setting';
 import { DietProvider } from '../contexts/DietContext';
 
+
 // Create a bottom tab navigator
 const Tab = createBottomTabNavigator();
 // Create a stack navigator
@@ -21,6 +22,8 @@ const Stack = createNativeStackNavigator();
 
 // Component that displays the bottom tab navigator
 export default function AppBottomTab() {
+
+
   return (
     // Create a bottom tab navigator with three tabs
     <Tab.Navigator
@@ -39,8 +42,8 @@ export default function AppBottomTab() {
         component={ActivityStack}
         options={{
           tabBarLabel: 'Activities',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="directions-run" size={24} color="white" />
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialIcons name="directions-run" size={24} color={focused ? 'white' : 'gray'} />
           ),
         }}
       />
@@ -51,8 +54,8 @@ export default function AppBottomTab() {
         component={DietStack}
         options={{
           tabBarLabel: 'Diet',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="fastfood" size={24} color="white" />
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialIcons name="fastfood" size={24} color={focused ? 'white' : 'gray'} />
           ),
         }}
       />
@@ -63,8 +66,8 @@ export default function AppBottomTab() {
         component={SettingStack}
         options={{
           tabBarLabel: 'Setting',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings" size={24} color="white" />
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons name="settings" size={24} color={focused ? 'white' : 'gray'} />
           ),
         }}
       />
