@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 		shadowColor: 'gray',
 		shadowOffset: { width: 0, height: 2 },
 		shadowOpacity: 0.5,
-		borderRadius: 5,
+		borderRadius: AppStyles.standardBorderRadius,
 	},
 	nameContainer: {
 		flex: 2,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 		margin: 5,
 	},
 	itemName: {
-		fontSize: 15,
+		fontSize: AppStyles.standardFontSize,
 		color: 'white',
 	},
 	warning: {

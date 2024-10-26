@@ -93,7 +93,7 @@ export default function AddActivity({ navigation }) {
 const styles = StyleSheet.create({
 	addActivityContainer: {
 		flex: 1,
-		padding: 20,
+		padding: AppStyles.standardPadding,
 	},
 	inputLabel:{
 		marginTop: 20,
@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
 	inputField: {
 		marginHorizontal: 5,
 		borderWidth: 1,
-		borderRadius: 5,
-		padding: 5,
+		borderRadius: AppStyles.standardBorderRadius,
+		padding: AppStyles.standardPadding,
 		backgroundColor: 'white',
 	},
 	buttonContainer: {

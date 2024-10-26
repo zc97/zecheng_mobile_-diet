@@ -23,12 +23,16 @@ export default function DateTimeSelector({ date, setDate }) {
             <TextInput
                 style={styles.inputField}
                 value={date ? date.toDateString(): ''}
-                onPressIn={() => setShow(show ? false : true)}
+                onPressIn={() => {
+                    setShow(show ? false : true)
+                    if (!date)
+                        setDate(new Date());
+                }}
             />
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
-                    value={date ? date: new Date()}
+                    value={date}
                     mode={'date'}
                     display="inline"
                     onChange={onChangeDate}
@@ -49,8 +53,8 @@ const styles = StyleSheet.create({
     inputField: {
         marginHorizontal: 5,
         borderWidth: 1,
-        borderRadius: 5,
-        padding: 5,
+        borderRadius: AppStyles.standardBorderRadius,
+        padding: AppStyles.standardPadding,
         backgroundColor: 'white',
     },
 })
