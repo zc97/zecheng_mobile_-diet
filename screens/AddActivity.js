@@ -6,6 +6,7 @@ import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
 import { ThemeContext } from '../contexts/ThemeContext';
+import { writeToDB } from '../firebase/firestoreHelper';
 
 // Screen that allows the user to add an activity
 export default function AddActivity({ navigation }) {
@@ -32,12 +33,19 @@ export default function AddActivity({ navigation }) {
 	}
 
 	// Save the activity item to the activity list
-	const handleSaveActivity = () => {
+	const handleSaveActivity = async () => {
 		// Check if all values are valid
 		if (!activity || !isNumber(duration) || !date) {
 			Alert.alert(title = 'Invalid Input', messafe = 'Please check your input values');
 			return;
 		}
+		
+		const addActivityToDB = await writeToDB({	
+			activity: activity, 
+			date: date.toDateString(), 
+			time: duration + ' mins' }, 
+			'activities');
+
 		setActivities((activities) =>
 			[...activities, {
 				id: activities.length + 1,
@@ -46,7 +54,8 @@ export default function AddActivity({ navigation }) {
 				time: duration + ' mins'
 			}
 			])
-		navigation.navigate('Activities')
+		
+		navigation.navigate('Activities');
 	}
 
 	return (

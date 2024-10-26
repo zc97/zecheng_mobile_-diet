@@ -23,6 +23,7 @@ export default function Activities({ navigation }) {
 		})
 	}, [navigation])
 
+
   return (
     <SafeAreaView style={[styles.activitiesContainer, {backgroundColor: theme.backgroundColor}]}>
       {/* Display a list of activities */}
