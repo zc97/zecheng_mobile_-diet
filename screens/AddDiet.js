@@ -3,12 +3,11 @@ import React, { useState, useContext } from 'react'
 import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
-import { DietContext } from '../contexts/DietContext';
 import { ThemeContext } from '../contexts/ThemeContext';
+import { writeToDB } from '../firebase/firestoreHelper';
 
 // Screen that allows the user to add a diet
 export default function AddDiet({ navigation }) {
-	const { diet, setDiet } = useContext(DietContext);
 	const { theme } = useContext(ThemeContext);
 
 	const [description, setDescription] = useState('');
@@ -20,20 +19,27 @@ export default function AddDiet({ navigation }) {
 	}
 
 	// Save the diet item to the diet list
-	const handleSaveDiet = () => {
+	const handleSaveDiet = async () => {
 		// Check if all values are valid
 		if (!description || !isNumber(calories) || !date) {
 			Alert.alert(title = 'Invalid Input', messafe = 'Please check your input values');
 			return;
 		}
-		setDiet((diet) =>
-			[...diet, {
-				id: diet.length + 1,
-				description: description,
-				date: date.toDateString(),
-				calories: calories,
-			}
-			])
+
+		const addDietToDB = await writeToDB({	
+			description: description, 
+			date: date.toDateString(), 
+			calories: calories }, 
+			'diet');
+
+		// setDiet((diet) =>
+		// 	[...diet, {
+		// 		id: diet.length + 1,
+		// 		description: description,
+		// 		date: date.toDateString(),
+		// 		calories: calories,
+		// 	}
+		// 	])
 		navigation.navigate('Diet')
 	}
 
