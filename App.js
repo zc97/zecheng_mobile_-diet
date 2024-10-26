@@ -1,20 +1,25 @@
+import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import Activities from './screens/Activities';
+import Diet from './screens/Diet';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AppBottomTab from './components/AppBottomTab';
+import AddActivity from './screens/AddActivity';
+import AppStyles from './styles/AppStyles';
+import { ThemeProvider } from './contexts/ThemeContext';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <NavigationContainer>
+          <AppBottomTab/>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
+const styles = StyleSheet.create({});
