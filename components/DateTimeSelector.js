@@ -22,14 +22,13 @@ export default function DateTimeSelector({ date, setDate }) {
             <Text style={[styles.label, {color: theme.textColor}]}>Date *</Text>
             <TextInput
                 style={styles.inputField}
-                value={date.toDateString()}
-                // editable={false}
+                value={date ? date.toDateString(): ''}
                 onPressIn={() => setShow(show ? false : true)}
             />
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
-                    value={date}
+                    value={date ? date: new Date()}
                     mode={'date'}
                     display="inline"
                     onChange={onChangeDate}

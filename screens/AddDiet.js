@@ -13,7 +13,7 @@ export default function AddDiet({ navigation }) {
 
 	const [description, setDescription] = useState('');
 	const [calories, setCalories] = useState('');
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(null);
 
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);

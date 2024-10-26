@@ -25,7 +25,7 @@ export default function AddActivity({ navigation }) {
 	]);
 
 	const [duration, setDuration] = useState(null);
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(null);
 
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);
