@@ -5,16 +5,13 @@ import AppStyles from '../styles/AppStyles';
 import { ThemeContext } from '../contexts/ThemeContext';
 
 // Component that allows the user to select a date and time
-export default function DateTimeSelector({ date, setDate }) {
+export default function DateTimeSelector({ date, setDate, showDate, setShowDate }) {
     const { theme } = useContext(ThemeContext);
-
-    const [show, setShow] = useState(false);
-
     // Function that changes the date based on the user's selection
     const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate;
         setDate(currentDate);
-        setShow(false);
+        setShowDate(false);
     };
 
     return (
@@ -24,12 +21,12 @@ export default function DateTimeSelector({ date, setDate }) {
                 style={styles.inputField}
                 value={date ? date.toDateString(): ''}
                 onPressIn={() => {
-                    setShow(show ? false : true)
+                    setShowDate(showDate ? false : true)
                     if (!date)
                         setDate(new Date());
                 }}
             />
-            {show && (
+            {showDate && (
                 <DateTimePicker
                     testID="dateTimePicker"
                     value={date}
