@@ -1,4 +1,4 @@
-import { doc, addDoc, collection, getDocs, updateDoc, setDoc } from "firebase/firestore";
+import { doc, addDoc, collection, setDoc, deleteDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export async function writeToDB(data, collectionName) {
@@ -21,27 +21,11 @@ export async function updateItem(itemId, data, collectionName) {
 }
 
 
-export async function setItemWarning(itemId, collectionName) {
+export async function deleteItem(itemId, collectionName) {
   try {
     const docRef = doc(database, collectionName, itemId);
-    await updateDoc(docRef, {
-      warning: true,
-    });
+    await deleteDoc(docRef);
   } catch (err) {
-    console.error('Update document warning field: ', err);
-  }
-}
-
-
-export async function realAllDocs(collectionName) {
-  try {
-    const querySnapshot = await getDocs(collection(database, collectionName));
-    let newArray = []; 
-    querySnapshot.forEach((docSnapshot) => {
-      newArray.push({ ...docSnapshot.data()});
-    });
-    return newArray;
-  } catch (err) {
-    console.error("Read all docs: ", err);
+    console.error('Delete item: ', err);
   }
 }

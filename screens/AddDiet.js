@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View, TextInput, Alert, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Alert, Pressable } from 'react-native'
 import React, { useState, useContext, useEffect } from 'react'
 import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
 import { ThemeContext } from '../contexts/ThemeContext';
-import { writeToDB, updateItem } from '../firebase/firestoreHelper';
+import { writeToDB, updateItem, deleteItem } from '../firebase/firestoreHelper';
 import Checkbox from 'expo-checkbox';
+import { Ionicons } from '@expo/vector-icons';
 
 
 // Screen that allows the user to add a diet
@@ -22,7 +23,14 @@ export default function AddDiet({ navigation, route }) {
 
 	useEffect(() => {
 		if (route.params?.data) {
-			navigation.setOptions({ title: 'Edit' });
+			navigation.setOptions({ 
+        title: 'Edit',
+        headerRight: () => (
+					<Pressable onPress={handleDeleteDiet} style={styles.deleteButton}>
+            <Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
+          </Pressable>
+        ),
+      });
 			const data = route.params.data;
 			setDescription(data.description);
 			setCalories(data.calories);
@@ -34,6 +42,14 @@ export default function AddDiet({ navigation, route }) {
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);
 	}
+
+		// Delete the activity item from the activity list
+		const handleDeleteDiet = async () => {
+			if (route.params?.data) {
+				await deleteItem(route.params.data.id, 'diet');
+				navigation.navigate('Diet');
+			}
+		};
 
 	// Save the diet item to the diet list
 	const handleSaveDiet = async () => {

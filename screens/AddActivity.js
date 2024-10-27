@@ -5,8 +5,10 @@ import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
 import { ThemeContext } from '../contexts/ThemeContext';
-import { writeToDB, updateItem } from '../firebase/firestoreHelper';
+import { writeToDB, updateItem, deleteItem } from '../firebase/firestoreHelper';
 import Checkbox from 'expo-checkbox';
+import { Ionicons } from '@expo/vector-icons';
+
 
 // Screen that allows the user to add an activity
 export default function AddActivity({ navigation, route }) {
@@ -32,7 +34,14 @@ export default function AddActivity({ navigation, route }) {
 
 	useEffect(() => {
 		if (route.params?.data) {
-			navigation.setOptions({ title: 'Edit' });
+			navigation.setOptions({ 
+        title: 'Edit',
+        headerRight: () => (
+					<Pressable onPress={handleDeleteActivity} style={styles.deleteButton}>
+            <Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
+          </Pressable>
+        ),
+      });
 			const data = route.params.data;
 			setActivity(data.activity);
 			setDuration(data.time.replace(' mins', ''));
@@ -44,6 +53,14 @@ export default function AddActivity({ navigation, route }) {
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);
 	}
+
+	// Delete the activity item from the activity list
+	const handleDeleteActivity = async () => {
+    if (route.params?.data) {
+      await deleteItem(route.params.data.id, 'activities');
+      navigation.navigate('Activities');
+    }
+  };
 
 	// Save the activity item to the activity list
 	const handleSaveActivity = async () => {
@@ -143,6 +160,10 @@ const styles = StyleSheet.create({
 	addActivityContainer: {
 		flex: 1,
 		padding: 15,
+	},
+	deleteButton: {
+		justifyContent: 'center',
+		alignContent: 'center',
 	},
 	inputLabel: {
 		marginVertical: 10,
