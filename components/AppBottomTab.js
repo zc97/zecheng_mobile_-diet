@@ -94,7 +94,7 @@ function ActivityStack() {
           component={Activities}
         />
         <Stack.Screen 
-          name="Add An Activity" 
+          name="AddActivity" 
           component={AddActivity} 
         />
       </Stack.Navigator>

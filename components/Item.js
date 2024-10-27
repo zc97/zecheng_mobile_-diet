@@ -2,10 +2,14 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, {useState, useContext, useEffect} from 'react'
 import AppStyles from '../styles/AppStyles'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 // Component that displays an item (activity or diet item)
 export default function Item({ itemData, type }) {
 	const[ warn, setWarn ] = useState(false);
+	const navigation = useNavigation();
 
 	// Check if the item should be warned
 	useEffect(() => {
@@ -20,20 +24,34 @@ export default function Item({ itemData, type }) {
 		}
 	}, [warn])
 
+	const handleEdit = () => {
+		if (type === 'activities')
+			navigation.navigate('AddActivity', { data: itemData, mode: 'edit' });
+		else
+			navigation.navigate('AddDiet', { data: itemData,  mode: 'edit' });
+  };
+
 	return (
-		<View style={styles.itemContainer}>
-			<View style={styles.nameContainer}>
-				{/* Display the item info by its type */}
-				<Text style= {styles.itemName}>{(type === 'activities') ? itemData.activity : itemData.description}</Text>
-				{warn && <Ionicons style={styles.warning} name="warning" size={24} color="orange" />}
+		<Pressable onPress={handleEdit}>
+			<View style={styles.itemContainer}>
+				<View style={styles.nameContainer}>
+					<Text style= {styles.itemName}>
+						{(type === 'activities') ? itemData.activity : itemData.description}
+					</Text>
+					{warn && <Ionicons style={styles.warning} name="warning" size={24} color="orange" />}
+				</View>
+				<View style = {styles.dateContainer}>
+					<Text>
+						{itemData.date}
+					</Text>
+				</View>
+				<View style = {styles.timeCaloriesContainer}>
+					<Text>
+						{(type === 'activities') ? itemData.time : itemData.calories}
+					</Text>
+				</View>
 			</View>
-			<View style = {styles.dateContainer}>
-				<Text>{itemData.date}</Text>
-			</View>
-			<View style = {styles.timeCaloriesContainer}>
-				<Text>{(type === 'activities') ? itemData.time : itemData.calories}</Text>
-			</View>
-		</View>
+		</Pressable>
 	)
 }
 

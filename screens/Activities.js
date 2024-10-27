@@ -4,11 +4,14 @@ import ItemList from '../components/ItemList'
 import { ThemeContext } from '../contexts/ThemeContext';
 import { database } from '../firebase/firebaseSetup';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
+
 
 // Screen that displays a list of activities
-export default function Activities({ navigation }) {
+export default function Activities() {
   const { theme } = useContext(ThemeContext)
 	const [activities, setActivities] = useState([]);
+	const navigation = useNavigation();
 
   // Add a button to the header that navigates to the Add An Activity screen
 	useLayoutEffect(() => {
@@ -18,7 +21,7 @@ export default function Activities({ navigation }) {
 					<Button
 						title='add'
 						onPress={() => {
-              navigation.navigate('Add An Activity')
+              navigation.navigate('AddActivity')
 						}}
 					/>
 				)

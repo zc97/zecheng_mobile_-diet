@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Button, TextInput, Pressable, Alert } from 'react-native'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
 import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
@@ -8,7 +8,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import { writeToDB } from '../firebase/firestoreHelper';
 
 // Screen that allows the user to add an activity
-export default function AddActivity({ navigation }) {
+export default function AddActivity({ navigation, route }) {
   const { theme } = useContext(ThemeContext)
 
 	const [open, setOpen] = useState(false);
@@ -25,6 +25,15 @@ export default function AddActivity({ navigation }) {
 
 	const [duration, setDuration] = useState(null);
 	const [date, setDate] = useState(null);
+
+	useEffect(() => {
+		if (route.params.data) {
+			const data = route.params.data;
+			setActivity(data.activity);
+			setDuration(data.time.replace(' mins', ''));
+			setDate(new Date(data.date));
+		}
+	}, []);
 
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);
@@ -44,15 +53,6 @@ export default function AddActivity({ navigation }) {
 			time: duration + ' mins' }, 
 			'activities');
 
-		// setActivities((activities) =>
-		// 	[...activities, {
-		// 		id: activities.length + 1,
-		// 		activity: activity,
-		// 		date: date.toDateString(),
-		// 		time: duration + ' mins'
-		// 	}
-		// 	])
-		
 		navigation.navigate('Activities');
 	}
 
