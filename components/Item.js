@@ -9,7 +9,7 @@ export default function Item({ itemData, type }) {
 
 	// Check if the item should be warned
 	useEffect(() => {
-		if (type === 'activity' &&
+		if (type === 'activities' &&
 			parseInt(itemData.time.replace(' mins', '')) > 60 && 
 			(itemData.activity === 'Running' || itemData.activity === 'Weights')) {
 				setWarn(true);
@@ -24,14 +24,14 @@ export default function Item({ itemData, type }) {
 		<View style={styles.itemContainer}>
 			<View style={styles.nameContainer}>
 				{/* Display the item info by its type */}
-				<Text style= {styles.itemName}>{(type === 'activity') ? itemData.activity : itemData.description}</Text>
+				<Text style= {styles.itemName}>{(type === 'activities') ? itemData.activity : itemData.description}</Text>
 				{warn && <Ionicons style={styles.warning} name="warning" size={24} color="orange" />}
 			</View>
 			<View style = {styles.dateContainer}>
 				<Text>{itemData.date}</Text>
 			</View>
 			<View style = {styles.timeCaloriesContainer}>
-				<Text>{(type === 'activity') ? itemData.time : itemData.calories}</Text>
+				<Text>{(type === 'activities') ? itemData.time : itemData.calories}</Text>
 			</View>
 		</View>
 	)
