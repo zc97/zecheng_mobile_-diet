@@ -23,7 +23,6 @@ const Stack = createNativeStackNavigator();
 // Component that displays the bottom tab navigator
 export default function AppBottomTab() {
 
-
   return (
     // Create a bottom tab navigator with three tabs
     <Tab.Navigator

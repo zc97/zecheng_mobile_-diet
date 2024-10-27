@@ -1,4 +1,4 @@
-import { doc, addDoc, collection, getDocs, updateDoc } from "firebase/firestore";
+import { doc, addDoc, collection, getDocs, updateDoc, setDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export async function writeToDB(data, collectionName) {
@@ -7,6 +7,16 @@ export async function writeToDB(data, collectionName) {
     return docRef
   } catch (err) {
     console.error("Write to database: ", err);
+  }
+}
+
+
+export async function updateItem(itemId, data, collectionName) {
+  try {
+    const docRef = doc(database, collectionName, itemId);
+    await setDoc(docRef, data, { merge: true });
+  } catch (err) {
+    console.error("Update item: ", err);
   }
 }
 

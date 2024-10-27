@@ -8,21 +8,23 @@ import { useNavigation } from '@react-navigation/native';
 
 // Component that displays an item (activity or diet item)
 export default function Item({ itemData, type }) {
-	const[ warn, setWarn ] = useState(false);
+	// const[ warn, setWarn ] = useState(false);
 	const navigation = useNavigation();
 
 	// Check if the item should be warned
-	useEffect(() => {
-		if (type === 'activities' &&
-			parseInt(itemData.time.replace(' mins', '')) > 60 && 
-			(itemData.activity === 'Running' || itemData.activity === 'Weights')) {
-				setWarn(true);
-		}
-		if (type === 'diet' &&
-			parseInt(itemData.calories) > 800) {
-				setWarn(true);
-		}
-	}, [warn])
+	// useEffect(() => {
+	// 	if (type === 'activities' &&
+	// 		parseInt(itemData.time.replace(' mins', '')) > 60 && 
+	// 		(itemData.activity === 'Running' || itemData.activity === 'Weights')) {
+	// 			setWarn(true);
+	// 	}
+	// 	else if (type === 'diet' &&
+	// 		parseInt(itemData.calories) > 800) {
+	// 			setWarn(true);
+	// 	} else {
+	// 		setWarn(false);
+	// 	}
+	// }, [itemData]);
 
 	const handleEdit = () => {
 		if (type === 'activities')
@@ -38,7 +40,7 @@ export default function Item({ itemData, type }) {
 					<Text style= {styles.itemName}>
 						{(type === 'activities') ? itemData.activity : itemData.description}
 					</Text>
-					{warn && <Ionicons style={styles.warning} name="warning" size={24} color="orange" />}
+					{itemData.warn && <Ionicons style={styles.warning} name="warning" size={24} color="orange" />}
 				</View>
 				<View style = {styles.dateContainer}>
 					<Text>

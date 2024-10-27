@@ -5,7 +5,7 @@ import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
 import { ThemeContext } from '../contexts/ThemeContext';
-import { writeToDB } from '../firebase/firestoreHelper';
+import { writeToDB, updateItem } from '../firebase/firestoreHelper';
 
 // Screen that allows the user to add an activity
 export default function AddActivity({ navigation, route }) {
@@ -22,16 +22,18 @@ export default function AddActivity({ navigation, route }) {
 		{ label: 'Cycling', value: 'Cycling' },
 		{ label: 'Hiking', value: 'Hiking' },
 	]);
-
 	const [duration, setDuration] = useState(null);
 	const [date, setDate] = useState(null);
+	const [warn, setWarn] = useState(false);
 
 	useEffect(() => {
-		if (route.params.data) {
+		if (route.params?.data) {
+			navigation.setOptions({ title: 'Edit' });
 			const data = route.params.data;
 			setActivity(data.activity);
 			setDuration(data.time.replace(' mins', ''));
 			setDate(new Date(data.date));
+			setWarn(data.warn);
 		}
 	}, []);
 
@@ -46,14 +48,41 @@ export default function AddActivity({ navigation, route }) {
 			Alert.alert(title = 'Invalid Input', messafe = 'Please check your input values');
 			return;
 		}
-		
+
+		// Check if the user is editing an existing activity item
+		if (route.params?.data) {
+			// Update the activity item
+			const updateActivity = await updateItem(route.params.data.id, 
+				{
+				activity: activity, 
+				date: date.toDateString(), 
+				time: duration + ' mins',
+				warn: warn,
+				}, 'activities');
+			navigation.navigate('Activities');
+			return;
+		}
+
 		const addActivityToDB = await writeToDB({	
 			activity: activity, 
 			date: date.toDateString(), 
-			time: duration + ' mins' }, 
+			time: duration + ' mins',
+			warn: warn,
+		 }, 
 			'activities');
 
 		navigation.navigate('Activities');
+	}
+
+	const handleDurationChange = (value) => {
+		setDuration(value);
+		// Check if the user is running or lifting weights for more than 60 minutes
+		if (parseInt(value) > 60 && 
+			(activity === 'Running' || activity === 'Weights')) {
+				setWarn(true);
+		} else {
+			setWarn(false);
+		}
 	}
 
 	return (
@@ -72,7 +101,7 @@ export default function AddActivity({ navigation, route }) {
 			<TextInput
 				style={styles.inputField}
 				value={duration}
-				onChangeText={setDuration}
+				onChangeText={handleDurationChange}
 				placeholder="Enter duration in minutes"
 				keyboardType="numeric"
 			/>
