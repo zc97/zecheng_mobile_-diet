@@ -24,7 +24,7 @@ export default function PressableButton({ children, pressedFunction, componentSt
 const styles = StyleSheet.create({
 	defaultStyle: {
 		borderRadius: AppStyles.standardBorderRadius,
-		padding: AppStyles.standardPadding + 5,
+		padding: AppStyles.standardPadding,
 		margin: 5,
 		backgroundColor: AppStyles.themeColor,
 		alignItems: 'center',

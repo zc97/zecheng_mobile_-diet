@@ -8,23 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 // Component that displays an item (activity or diet item)
 export default function Item({ itemData, type }) {
-	// const[ warn, setWarn ] = useState(false);
 	const navigation = useNavigation();
-
-	// Check if the item should be warned
-	// useEffect(() => {
-	// 	if (type === 'activities' &&
-	// 		parseInt(itemData.time.replace(' mins', '')) > 60 && 
-	// 		(itemData.activity === 'Running' || itemData.activity === 'Weights')) {
-	// 			setWarn(true);
-	// 	}
-	// 	else if (type === 'diet' &&
-	// 		parseInt(itemData.calories) > 800) {
-	// 			setWarn(true);
-	// 	} else {
-	// 		setWarn(false);
-	// 	}
-	// }, [itemData]);
 
 	const handleEdit = () => {
 		if (type === 'activities')

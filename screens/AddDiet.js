@@ -26,9 +26,9 @@ export default function AddDiet({ navigation, route }) {
 			navigation.setOptions({ 
         title: 'Edit',
         headerRight: () => (
-					<Pressable onPress={handleDeleteDiet} style={styles.deleteButton}>
-            <Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
-          </Pressable>
+					<PressableButton pressedFunction={handleDeleteDiet} componentStyle={styles.deleteButton}>
+						<Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
+					</PressableButton>
         ),
       });
 			const data = route.params.data;
@@ -149,6 +149,9 @@ const styles = StyleSheet.create({
 	addDeitContainer: {
 		flex: 1,
 		padding: 20,
+	},
+	deleteButton: {
+		padding: 0,
 	},
 	topContainer: {
 		flex: 1,

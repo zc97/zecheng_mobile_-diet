@@ -37,9 +37,9 @@ export default function AddActivity({ navigation, route }) {
 			navigation.setOptions({ 
         title: 'Edit',
         headerRight: () => (
-					<Pressable onPress={handleDeleteActivity} style={styles.deleteButton}>
-            <Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
-          </Pressable>
+					<PressableButton pressedFunction={deleteAlter} componentStyle={styles.deleteButton}>
+						<Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
+					</PressableButton>
         ),
       });
 			const data = route.params.data;
@@ -53,6 +53,24 @@ export default function AddActivity({ navigation, route }) {
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);
 	}
+
+	const deleteAlter = () => {
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this activity?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: handleDeleteActivity,
+          style: "destructive"
+        }
+      ]
+    );
+  };
 
 	// Delete the activity item from the activity list
 	const handleDeleteActivity = async () => {
@@ -162,8 +180,7 @@ const styles = StyleSheet.create({
 		padding: 15,
 	},
 	deleteButton: {
-		justifyContent: 'center',
-		alignContent: 'center',
+		padding: 0,
 	},
 	inputLabel: {
 		marginVertical: 10,
