@@ -35,14 +35,14 @@ export default function AddActivity({ navigation, route }) {
 	// initialize the screen with the data and header options
 	useEffect(() => {
 		if (route.params?.data) {
-			navigation.setOptions({ 
-        title: 'Edit',
-        headerRight: () => (
+			navigation.setOptions({
+				title: 'Edit',
+				headerRight: () => (
 					<PressableButton pressedFunction={deleteAlter} componentStyle={styles.deleteButton}>
 						<Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
 					</PressableButton>
-        ),
-      });
+				),
+			});
 			const data = route.params.data;
 			setActivity(data.activity);
 			setDuration(data.time.replace(' mins', ''));
@@ -58,48 +58,49 @@ export default function AddActivity({ navigation, route }) {
 	}
 
 	const deleteAlter = () => {
-    Alert.alert(
-      "Confirm Deletion",
-      "Are you sure you want to delete this activity?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        {
-          text: "Delete",
-          onPress: handleDeleteActivity,
-          style: "destructive"
-        }
-      ]
-    );
-  };
+		Alert.alert(
+			"Confirm Deletion",
+			"Are you sure you want to delete this activity?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{
+					text: "Delete",
+					onPress: handleDeleteActivity,
+					style: "destructive"
+				}
+			]
+		);
+	};
 
 	const updateAlter = () => {
-    Alert.alert(
-      "Confirm Save",
-      "Are you sure you want to save the changes?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        {
-          text: "Save",
-          onPress: handleSaveActivity,
-          style: "default"
-        }
-      ]
-    );
-  };
+		Alert.alert(
+			"Confirm Save",
+			"Are you sure you want to save the changes?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{
+					text: "Save",
+					onPress: handleSaveActivity,
+					style: "default"
+				}
+			]
+		);
+	};
 
 	// Delete the activity item from the activity list
 	const handleDeleteActivity = async () => {
-    if (route.params?.data) {
-      await deleteItem(route.params.data.id, 'activities');
-      navigation.navigate('Activities');
-    }
-  };
+		if (route.params?.data) {
+			await deleteItem(route.params.data.id, 'activities');
+			navigation.navigate('Activities');
+		}
+	};
+
 
 	// Save the activity item to the activity list
 	const handleSaveActivity = async () => {
@@ -109,6 +110,8 @@ export default function AddActivity({ navigation, route }) {
 			return;
 		}
 
+		const calculatedWarn = (activity === 'Running' || activity === 'Weights') && parseInt(duration) > 60;
+
 		// Check if the user is editing an existing activity item
 		if (route.params?.data) {
 			// Update the activity item
@@ -116,29 +119,17 @@ export default function AddActivity({ navigation, route }) {
 				activity: activity,
 				date: date.toDateString(),
 				time: duration + ' mins',
-				warn: (ignoreWarn) ? false : warn,
+				warn: (ignoreWarn) ? false : calculatedWarn,
 			}, 'activities');
 		} else {
 			const addActivityToDB = await writeToDB({
 				activity: activity,
 				date: date.toDateString(),
 				time: duration + ' mins',
-				warn: warn,
+				warn: calculatedWarn,
 			}, 'activities');
 		}
 		navigation.navigate('Activities');
-	}
-
-	const handleDurationChange = (value) => {
-		setDuration(value);
-		// Check if the user is running or lifting weights for more than 60 minutes
-		if (
-			parseInt(value) > 60 &&
-			(activity === 'Running' || activity === 'Weights')) {
-			setWarn(true);
-		} else {
-			setWarn(false);
-		}
 	}
 
 	return (
@@ -157,7 +148,7 @@ export default function AddActivity({ navigation, route }) {
 			<TextInput
 				style={styles.inputField}
 				value={duration}
-				onChangeText={handleDurationChange}
+				onChangeText={setDuration}
 				placeholder="Enter duration in minutes"
 				keyboardType="numeric"
 			/>
@@ -168,7 +159,8 @@ export default function AddActivity({ navigation, route }) {
 			<View style={styles.bottomContainer}>
 				{showIgnoreWarnCheck &&
 					<View style={styles.checkboxContainer}>
-						<Text style={styles.inputLabel}>This item is marked as special Select the checkbox if you would like to approve it.</Text>
+						<Text style={styles.inputLabel}>This item is marked as special Select the checkbox if you would like to approve it.
+						</Text>
 						<Checkbox
 							style={styles.checkBox}
 							value={ignoreWarn}
@@ -185,7 +177,7 @@ export default function AddActivity({ navigation, route }) {
 					</PressableButton>
 					<PressableButton
 						pressedFunction={() => navigation.goBack()}
-						componentStyle={{backgroundColor : 'red'}}
+						componentStyle={{ backgroundColor: 'red' }}
 					>
 						<Text style={styles.buttonText}>Cancel</Text>
 					</PressableButton>

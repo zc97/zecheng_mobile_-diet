@@ -47,40 +47,40 @@ export default function AddDiet({ navigation, route }) {
 	}
 
 	const deleteAlter = () => {
-    Alert.alert(
-      "Confirm Deletion",
-      "Are you sure you want to delete this diet?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        {
-          text: "Delete",
-          onPress: handleDeleteDiet,
-          style: "destructive"
-        }
-      ]
-    );
-  };
+		Alert.alert(
+			"Confirm Deletion",
+			"Are you sure you want to delete this diet?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{
+					text: "Delete",
+					onPress: handleDeleteDiet,
+					style: "destructive"
+				}
+			]
+		);
+	};
 
 	const updateAlter = () => {
-    Alert.alert(
-      "Confirm Save",
-      "Are you sure you want to save the changes?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        {
-          text: "Save",
-          onPress: handleSaveDiet,
-          style: "default"
-        }
-      ]
-    );
-  };
+		Alert.alert(
+			"Confirm Save",
+			"Are you sure you want to save the changes?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{
+					text: "Save",
+					onPress: handleSaveDiet,
+					style: "default"
+				}
+			]
+		);
+	};
 
 	// Delete the activity item from the activity list
 	const handleDeleteDiet = async () => {
@@ -152,8 +152,8 @@ export default function AddDiet({ navigation, route }) {
 
 			{!showDate && (
 				<View style={styles.bottomContainer}>
-					<View style={styles.checkboxContainer}>
-						{showIgnoreWarnCheck &&
+					{showIgnoreWarnCheck &&
+						<View style={styles.checkboxContainer}>
 							<View style={styles.checkboxContainer}>
 								<Text style={styles.inputLabel}>This item is marked as special Select the checkbox if you would like to approve it.
 								</Text>
@@ -163,8 +163,9 @@ export default function AddDiet({ navigation, route }) {
 									onValueChange={setIgnoreWarn}
 								/>
 							</View>
-						}
-					</View>
+						</View>
+					}
+
 
 					<View style={styles.buttonContainer}>
 						<PressableButton
@@ -230,13 +231,13 @@ const styles = StyleSheet.create({
 	checkboxContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'flex-start',
+		justifyContent: 'center',
 		padding: AppStyles.standardPadding - 5,
 	},
 	buttonText: {
 		color: AppStyles.pressableButtonFontColor,
 	},
 	checkBox: {
-		margin: 10,
+		margin: 5,
 	},
 })
