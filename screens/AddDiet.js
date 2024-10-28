@@ -24,14 +24,14 @@ export default function AddDiet({ navigation, route }) {
 	// initialize the screen with the data and header options
 	useEffect(() => {
 		if (route.params?.data) {
-			navigation.setOptions({ 
-        title: 'Edit',
-        headerRight: () => (
-					<PressableButton pressedFunction={handleDeleteDiet} componentStyle={styles.deleteButton}>
+			navigation.setOptions({
+				title: 'Edit',
+				headerRight: () => (
+					<PressableButton pressedFunction={deleteAlter} componentStyle={styles.deleteButton}>
 						<Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
 					</PressableButton>
-        ),
-      });
+				),
+			});
 			const data = route.params.data;
 			setDescription(data.description);
 			setCalories(data.calories);
@@ -46,13 +46,49 @@ export default function AddDiet({ navigation, route }) {
 		return /^\d+$/.test(value);
 	}
 
-		// Delete the activity item from the activity list
-		const handleDeleteDiet = async () => {
-			if (route.params?.data) {
-				await deleteItem(route.params.data.id, 'diet');
-				navigation.navigate('Diet');
-			}
-		};
+	const deleteAlter = () => {
+    Alert.alert(
+      "Confirm Deletion",
+      "Are you sure you want to delete this diet?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: handleDeleteDiet,
+          style: "destructive"
+        }
+      ]
+    );
+  };
+
+	const updateAlter = () => {
+    Alert.alert(
+      "Confirm Save",
+      "Are you sure you want to save the changes?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Save",
+          onPress: handleSaveDiet,
+          style: "default"
+        }
+      ]
+    );
+  };
+
+	// Delete the activity item from the activity list
+	const handleDeleteDiet = async () => {
+		if (route.params?.data) {
+			await deleteItem(route.params.data.id, 'diet');
+			navigation.navigate('Diet');
+		}
+	};
 
 	// Save the diet item to the diet list
 	const handleSaveDiet = async () => {
@@ -138,7 +174,7 @@ export default function AddDiet({ navigation, route }) {
 						</PressableButton>
 						<PressableButton
 							pressedFunction={() => navigation.goBack()}
-							componentStyle={{backgroundColor : 'red'}}
+							componentStyle={{ backgroundColor: 'red' }}
 						>
 							<Text style={styles.buttonText}>Cancel</Text>
 						</PressableButton>

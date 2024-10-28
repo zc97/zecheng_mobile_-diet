@@ -75,6 +75,24 @@ export default function AddActivity({ navigation, route }) {
     );
   };
 
+	const updateAlter = () => {
+    Alert.alert(
+      "Confirm Save",
+      "Are you sure you want to save the changes?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Save",
+          onPress: handleSaveActivity,
+          style: "default"
+        }
+      ]
+    );
+  };
+
 	// Delete the activity item from the activity list
 	const handleDeleteActivity = async () => {
     if (route.params?.data) {
@@ -161,7 +179,7 @@ export default function AddActivity({ navigation, route }) {
 
 				<View style={styles.buttonContainer}>
 					<PressableButton
-						pressedFunction={handleSaveActivity}
+						pressedFunction={route.params?.data ? updateAlter : handleSaveActivity}
 					>
 						<Text style={styles.buttonText}>Save</Text>
 					</PressableButton>
