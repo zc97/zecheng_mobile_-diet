@@ -168,7 +168,7 @@ export default function AddDiet({ navigation, route }) {
 
 					<View style={styles.buttonContainer}>
 						<PressableButton
-							pressedFunction={handleSaveDiet}
+							pressedFunction={route.params?.data ? updateAlter : handleSaveDiet}
 						>
 							<Text style={styles.buttonText}>Save</Text>
 						</PressableButton>
