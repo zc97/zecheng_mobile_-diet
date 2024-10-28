@@ -21,6 +21,7 @@ export default function AddDiet({ navigation, route }) {
 	const [ignoreWarn, setIgnoreWarn] = useState(false);
 	const [showIgnoreWarnCheck, setShowIgnoreWarnCheck] = useState(false);
 
+	// initialize the screen with the data and header options
 	useEffect(() => {
 		if (route.params?.data) {
 			navigation.setOptions({ 

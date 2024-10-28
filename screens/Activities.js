@@ -5,7 +5,10 @@ import { ThemeContext } from '../contexts/ThemeContext';
 import { database } from '../firebase/firebaseSetup';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
-
+import AntDesign from '@expo/vector-icons/AntDesign';
+import PressableButton from '../components/pressableButton';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import AppStyles from '../styles/AppStyles';
 
 // Screen that displays a list of activities
 export default function Activities() {
@@ -18,12 +21,14 @@ export default function Activities() {
 		navigation.setOptions({
 			headerRight: () => {
 				return (
-					<Button
-						title='add'
-						onPress={() => {
-              navigation.navigate('AddActivity')
-						}}
-					/>
+					<PressableButton 
+						pressedFunction={
+							() => navigation.navigate('AddActivity')
+						} 
+						componentStyle={styles.addButton}>
+						<AntDesign name="plus" size={23} color={AppStyles.lightTabIconColor} />
+						<MaterialIcons name="directions-run" size={24} color={AppStyles.lightTabIconColor} />
+					</PressableButton>
 				)
 			}
 		})
@@ -54,4 +59,11 @@ const styles = StyleSheet.create({
   activitiesContainer: {
     flex: 1,
   },
+	addButton: {
+		flexDirection: 'row',
+		margin: 0,
+		padding: 5,
+		backgroundColor: AppStyles.themeColor,
+		borderRadius: AppStyles.standardBorderRadius,
+	}
 })

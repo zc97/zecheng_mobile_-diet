@@ -14,9 +14,7 @@ export default function PressableButton({ children, pressedFunction, componentSt
 			]}}
 			onPress={pressedFunction}
 		>
-			<View>
-				{children}
-			</View>
+			{children}
 		</Pressable>
 	)
 }
