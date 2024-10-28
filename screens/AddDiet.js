@@ -1,45 +1,135 @@
-import { StyleSheet, Text, View, Button, TextInput, Pressable, Alert } from 'react-native'
-import React, { useState, useContext } from 'react'
+import { StyleSheet, Text, View, TextInput, Alert, Pressable } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react'
 import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
-import { DietContext } from '../contexts/DietContext';
 import { ThemeContext } from '../contexts/ThemeContext';
+import { writeToDB, updateItem, deleteItem } from '../firebase/firestoreHelper';
+import Checkbox from 'expo-checkbox';
+import { Ionicons } from '@expo/vector-icons';
+
 
 // Screen that allows the user to add a diet
-export default function AddDiet({ navigation }) {
-	const { diet, setDiet } = useContext(DietContext);
+export default function AddDiet({ navigation, route }) {
 	const { theme } = useContext(ThemeContext);
 
 	const [description, setDescription] = useState('');
 	const [calories, setCalories] = useState('');
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(null);
+	const [showDate, setShowDate] = useState(false);
+	const [warn, setWarn] = useState(false);
+	const [ignoreWarn, setIgnoreWarn] = useState(false);
+	const [showIgnoreWarnCheck, setShowIgnoreWarnCheck] = useState(false);
+
+	// initialize the screen with the data and header options
+	useEffect(() => {
+		if (route.params?.data) {
+			navigation.setOptions({
+				title: 'Edit',
+				headerRight: () => (
+					<PressableButton pressedFunction={deleteAlter} componentStyle={styles.deleteButton}>
+						<Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
+					</PressableButton>
+				),
+			});
+			const data = route.params.data;
+			setDescription(data.description);
+			setCalories(data.calories);
+			setDate(new Date(data.date));
+			setShowIgnoreWarnCheck(data.warn);
+		} else {
+			navigation.setOptions({ title: 'Add A Diet' });
+		}
+	}, []);
 
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);
 	}
 
+	const deleteAlter = () => {
+		Alert.alert(
+			"Confirm Deletion",
+			"Are you sure you want to delete this diet?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{
+					text: "Delete",
+					onPress: handleDeleteDiet,
+					style: "destructive"
+				}
+			]
+		);
+	};
+
+	const updateAlter = () => {
+		Alert.alert(
+			"Confirm Save",
+			"Are you sure you want to save the changes?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{
+					text: "Save",
+					onPress: handleSaveDiet,
+					style: "default"
+				}
+			]
+		);
+	};
+
+	// Delete the activity item from the activity list
+	const handleDeleteDiet = async () => {
+		if (route.params?.data) {
+			await deleteItem(route.params.data.id, 'diet');
+			navigation.navigate('Diet');
+		}
+	};
+
 	// Save the diet item to the diet list
-	const handleSaveDiet = () => {
+	const handleSaveDiet = async () => {
 		// Check if all values are valid
 		if (!description || !isNumber(calories) || !date) {
 			Alert.alert(title = 'Invalid Input', messafe = 'Please check your input values');
 			return;
 		}
-		setDiet((diet) =>
-			[...diet, {
-				id: diet.length + 1,
+
+		if (route.params?.data) {
+			const updateDiet = await updateItem(route.params.data.id, {
 				description: description,
 				date: date.toDateString(),
 				calories: calories,
-			}
-			])
+				warn: (ignoreWarn) ? false : warn,
+			}, 'diet');
+		} else {
+			const addDietToDB = await writeToDB({
+				description: description,
+				date: date.toDateString(),
+				calories: calories,
+				warn: warn,
+			},
+				'diet');
+		}
 		navigation.navigate('Diet')
 	}
 
+	const handleCloriesChange = (value) => {
+		setCalories(value);
+		if (parseInt(value) > 800) {
+			setWarn(true);
+		} else {
+			setWarn(false);
+		}
+	}
+
 	return (
-		<View style={[styles.addDeitContainer, {backgroundColor: theme.backgroundColor}]}>
-			<Text style={[styles.inputLabel, {color: theme.textColor}]}>Description *</Text>
+		<View style={[styles.addDeitContainer, { backgroundColor: theme.backgroundColor }]}>
+			<View style={styles.topContainer}>
+				<Text style={[styles.inputLabel, { color: theme.textColor }]}>Description *</Text>
 				<TextInput
 					style={styles.descriptionInputField}
 					value={description}
@@ -47,31 +137,51 @@ export default function AddDiet({ navigation }) {
 					multiline={true}
 				/>
 
-			<Text style={[styles.inputLabel, {color: theme.textColor}]}>Calories *</Text>
-			<TextInput
-				style={styles.durationInputField}
-				value={calories}
-				onChangeText={setCalories}
-				placeholder="Enter duration in minutes"
-				keyboardType="numeric"
-			/>
+				<Text style={[styles.inputLabel, { color: theme.textColor }]}>Calories *</Text>
+				<TextInput
+					style={styles.durationInputField}
+					value={calories}
+					onChangeText={handleCloriesChange}
+					placeholder="Enter Food Clories"
+					keyboardType="numeric"
+				/>
 
-			{/* Display the customized DateTimeSelector component */}
-			<DateTimeSelector date={date} setDate={setDate}></DateTimeSelector>
-
-			<View style={styles.buttonContainer}>
-				<PressableButton
-					pressedFunction={handleSaveDiet}
-				>
-					<Text style={styles.buttonText}>Save</Text>
-				</PressableButton>
-				<PressableButton
-					pressedFunction={() => navigation.goBack()}
-				>
-					<Text style={styles.buttonText}>Cancel</Text>
-				</PressableButton>
+				{/* Display the customized DateTimeSelector component */}
+				<DateTimeSelector date={date} setDate={setDate} showDate={showDate} setShowDate={setShowDate}></DateTimeSelector>
 			</View>
 
+			{!showDate && (
+				<View style={styles.bottomContainer}>
+					{showIgnoreWarnCheck &&
+						<View style={styles.checkboxContainer}>
+							<View style={styles.checkboxContainer}>
+								<Text style={styles.inputLabel}>This item is marked as special Select the checkbox if you would like to approve it.
+								</Text>
+								<Checkbox
+									style={styles.checkBox}
+									value={ignoreWarn}
+									onValueChange={setIgnoreWarn}
+								/>
+							</View>
+						</View>
+					}
+
+
+					<View style={styles.buttonContainer}>
+						<PressableButton
+							pressedFunction={route.params?.data ? updateAlter : handleSaveDiet}
+						>
+							<Text style={styles.buttonText}>Save</Text>
+						</PressableButton>
+						<PressableButton
+							pressedFunction={() => navigation.goBack()}
+							componentStyle={{ backgroundColor: 'red' }}
+						>
+							<Text style={styles.buttonText}>Cancel</Text>
+						</PressableButton>
+					</View>
+				</View>
+			)}
 		</View>
 	)
 }
@@ -81,8 +191,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 20,
 	},
-	inputLabel:{
-		marginTop: 20,
+	deleteButton: {
+		padding: 0,
+	},
+	topContainer: {
+		flex: 1,
+		justifyContent: 'flex-start',
+	},
+	inputLabel: {
+		marginTop: 10,
 		marginBottom: 5,
 		marginHorizontal: 5,
 		fontWeight: 'bold',
@@ -92,24 +209,35 @@ const styles = StyleSheet.create({
 		height: 80,
 		marginHorizontal: 5,
 		borderWidth: 1,
-		borderRadius: 5,
-		padding: 5,
+		borderRadius: AppStyles.standardBorderRadius,
+		padding: AppStyles.standardPadding,
 		backgroundColor: 'white',
 	},
 	durationInputField: {
 		marginHorizontal: 5,
 		borderWidth: 1,
-		borderRadius: 5,
-		padding: 5,
+		borderRadius: AppStyles.standardBorderRadius,
+		padding: AppStyles.standardPadding,
 		backgroundColor: 'white',
 	},
-	buttonContainer: {
+	bottomContainer: {
 		flex: 1,
+		justifyContent: 'flex-end',
+	},
+	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-		alignItems: 'flex-end',
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: AppStyles.standardPadding - 5,
 	},
 	buttonText: {
 		color: AppStyles.pressableButtonFontColor,
-	}
+	},
+	checkBox: {
+		margin: 5,
+	},
 })

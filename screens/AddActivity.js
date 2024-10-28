@@ -1,16 +1,18 @@
 import { StyleSheet, Text, View, Button, TextInput, Pressable, Alert } from 'react-native'
-import React, { useState, useContext } from 'react'
-import { ActivitiesContext } from '../contexts/ActivitiesContext'
+import React, { useState, useContext, useEffect } from 'react'
 import DropDownPicker from 'react-native-dropdown-picker';
 import PressableButton from '../components/pressableButton';
 import AppStyles from '../styles/AppStyles';
 import DateTimeSelector from '../components/DateTimeSelector';
 import { ThemeContext } from '../contexts/ThemeContext';
+import { writeToDB, updateItem, deleteItem } from '../firebase/firestoreHelper';
+import Checkbox from 'expo-checkbox';
+import { Ionicons } from '@expo/vector-icons';
+
 
 // Screen that allows the user to add an activity
-export default function AddActivity({ navigation }) {
-	const { activities, setActivities } = useContext(ActivitiesContext);
-  const { theme } = useContext(ThemeContext)
+export default function AddActivity({ navigation, route }) {
+	const { theme } = useContext(ThemeContext)
 
 	const [open, setOpen] = useState(false);
 	const [activity, setActivity] = useState(null);
@@ -23,45 +25,126 @@ export default function AddActivity({ navigation }) {
 		{ label: 'Cycling', value: 'Cycling' },
 		{ label: 'Hiking', value: 'Hiking' },
 	]);
-
 	const [duration, setDuration] = useState(null);
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(null);
+	const [showDate, setShowDate] = useState(false);
+	const [warn, setWarn] = useState(false);
+	const [ignoreWarn, setIgnoreWarn] = useState(false);
+	const [showIgnoreWarnCheck, setShowIgnoreWarnCheck] = useState(false);
+
+	// initialize the screen with the data and header options
+	useEffect(() => {
+		if (route.params?.data) {
+			navigation.setOptions({
+				title: 'Edit',
+				headerRight: () => (
+					<PressableButton pressedFunction={deleteAlter} componentStyle={styles.deleteButton}>
+						<Ionicons name="trash" size={23} color={AppStyles.lightTabIconColor} />
+					</PressableButton>
+				),
+			});
+			const data = route.params.data;
+			setActivity(data.activity);
+			setDuration(data.time.replace(' mins', ''));
+			setDate(new Date(data.date));
+			setShowIgnoreWarnCheck(data.warn);
+		} else {
+			navigation.setOptions({ title: 'Add An Activity' });
+		}
+	}, []);
 
 	const isNumber = (value) => {
 		return /^\d+$/.test(value);
 	}
 
+	const deleteAlter = () => {
+		Alert.alert(
+			"Confirm Deletion",
+			"Are you sure you want to delete this activity?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{
+					text: "Delete",
+					onPress: handleDeleteActivity,
+					style: "destructive"
+				}
+			]
+		);
+	};
+
+	const updateAlter = () => {
+		Alert.alert(
+			"Confirm Save",
+			"Are you sure you want to save the changes?",
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{
+					text: "Save",
+					onPress: handleSaveActivity,
+					style: "default"
+				}
+			]
+		);
+	};
+
+	// Delete the activity item from the activity list
+	const handleDeleteActivity = async () => {
+		if (route.params?.data) {
+			await deleteItem(route.params.data.id, 'activities');
+			navigation.navigate('Activities');
+		}
+	};
+
+
 	// Save the activity item to the activity list
-	const handleSaveActivity = () => {
+	const handleSaveActivity = async () => {
 		// Check if all values are valid
 		if (!activity || !isNumber(duration) || !date) {
 			Alert.alert(title = 'Invalid Input', messafe = 'Please check your input values');
 			return;
 		}
-		setActivities((activities) =>
-			[...activities, {
-				id: activities.length + 1,
+
+		const calculatedWarn = (activity === 'Running' || activity === 'Weights') && parseInt(duration) > 60;
+
+		// Check if the user is editing an existing activity item
+		if (route.params?.data) {
+			// Update the activity item
+			const updateActivity = await updateItem(route.params.data.id, {
 				activity: activity,
 				date: date.toDateString(),
-				time: duration + ' mins'
-			}
-			])
-		navigation.navigate('Activities')
+				time: duration + ' mins',
+				warn: (ignoreWarn) ? false : calculatedWarn,
+			}, 'activities');
+		} else {
+			const addActivityToDB = await writeToDB({
+				activity: activity,
+				date: date.toDateString(),
+				time: duration + ' mins',
+				warn: calculatedWarn,
+			}, 'activities');
+		}
+		navigation.navigate('Activities');
 	}
 
 	return (
-		<View style={[styles.addActivityContainer, {backgroundColor: theme.backgroundColor}]}>
-			<Text style={[styles.inputLabel, {color: theme.textColor}]}>Select An Activity *</Text>
-				<DropDownPicker
-					open={open}
-					value={activity}
-					items={items}
-					setOpen={setOpen}
-					setValue={setActivity}
-					setItems={setItems}
-				/>
+		<View style={[styles.addActivityContainer, { backgroundColor: theme.backgroundColor }]}>
+			<Text style={[styles.inputLabel, { color: theme.textColor }]}>Select An Activity *</Text>
+			<DropDownPicker
+				open={open}
+				value={activity}
+				items={items}
+				setOpen={setOpen}
+				setValue={setActivity}
+				setItems={setItems}
+			/>
 
-			<Text style={[styles.inputLabel, {color: theme.textColor}]}>Duration (min)  *</Text>
+			<Text style={[styles.inputLabel, { color: theme.textColor }]}>Duration (min)  *</Text>
 			<TextInput
 				style={styles.inputField}
 				value={duration}
@@ -71,19 +154,34 @@ export default function AddActivity({ navigation }) {
 			/>
 
 			{/* Display the customized DateTimeSelector component */}
-			<DateTimeSelector date={date} setDate={setDate}></DateTimeSelector>
+			<DateTimeSelector date={date} setDate={setDate} showDate={showDate} setShowDate={setShowDate}></DateTimeSelector>
 
-			<View style={styles.buttonContainer}>
-				<PressableButton
-					pressedFunction={handleSaveActivity}
-				>
-					<Text style={styles.buttonText}>Save</Text>
-				</PressableButton>
-				<PressableButton
-					pressedFunction={() => navigation.goBack()}
-				>
-					<Text style={styles.buttonText}>Cancel</Text>
-				</PressableButton>
+			<View style={styles.bottomContainer}>
+				{showIgnoreWarnCheck &&
+					<View style={styles.checkboxContainer}>
+						<Text style={styles.inputLabel}>This item is marked as special Select the checkbox if you would like to approve it.
+						</Text>
+						<Checkbox
+							style={styles.checkBox}
+							value={ignoreWarn}
+							onValueChange={setIgnoreWarn}
+						/>
+					</View>
+				}
+
+				<View style={styles.buttonContainer}>
+					<PressableButton
+						pressedFunction={route.params?.data ? updateAlter : handleSaveActivity}
+					>
+						<Text style={styles.buttonText}>Save</Text>
+					</PressableButton>
+					<PressableButton
+						pressedFunction={() => navigation.goBack()}
+						componentStyle={{ backgroundColor: 'red' }}
+					>
+						<Text style={styles.buttonText}>Cancel</Text>
+					</PressableButton>
+				</View>
 			</View>
 
 		</View>
@@ -93,10 +191,13 @@ export default function AddActivity({ navigation }) {
 const styles = StyleSheet.create({
 	addActivityContainer: {
 		flex: 1,
-		padding: 20,
+		padding: 15,
 	},
-	inputLabel:{
-		marginTop: 20,
+	deleteButton: {
+		padding: 0,
+	},
+	inputLabel: {
+		marginVertical: 10,
 		marginBottom: 5,
 		marginHorizontal: 5,
 		fontWeight: 'bold',
@@ -105,17 +206,28 @@ const styles = StyleSheet.create({
 	inputField: {
 		marginHorizontal: 5,
 		borderWidth: 1,
-		borderRadius: 5,
-		padding: 5,
+		borderRadius: AppStyles.standardBorderRadius,
+		padding: AppStyles.standardPadding,
 		backgroundColor: 'white',
 	},
-	buttonContainer: {
+	bottomContainer: {
 		flex: 1,
+		justifyContent: 'flex-end',
+	},
+	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-		alignItems: 'flex-end',
 	},
 	buttonText: {
 		color: AppStyles.pressableButtonFontColor,
-	}
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		padding: AppStyles.standardPadding - 5,
+	},
+	checkBox: {
+		margin: 10,
+	},
 })

@@ -6,4 +6,10 @@ export default {
 	darkBackgroundColor: 'gray',
 	darkTextColor: 'white',
 	pressableButtonFontColor: 'white',
+	lightTabIconColor: 'white',
+	darkTabIconColor: 'gray',
+	standardPadding: 10,
+	standardFontSize: 16,
+	standardMargin: 10,
+	standardBorderRadius: 5,
 };

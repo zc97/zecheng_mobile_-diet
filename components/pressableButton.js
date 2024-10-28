@@ -14,17 +14,15 @@ export default function PressableButton({ children, pressedFunction, componentSt
 			]}}
 			onPress={pressedFunction}
 		>
-			<View>
-				{children}
-			</View>
+			{children}
 		</Pressable>
 	)
 }
 
 const styles = StyleSheet.create({
 	defaultStyle: {
-		borderRadius: 5,
-		padding: 8,
+		borderRadius: AppStyles.standardBorderRadius,
+		padding: AppStyles.standardPadding,
 		margin: 5,
 		backgroundColor: AppStyles.themeColor,
 		alignItems: 'center',
