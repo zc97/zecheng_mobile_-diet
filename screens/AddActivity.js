@@ -27,6 +27,7 @@ export default function AddActivity({ navigation, route }) {
 	]);
 	const [duration, setDuration] = useState(null);
 	const [date, setDate] = useState(null);
+	const [showDate, setShowDate] = useState(false);
 	const [warn, setWarn] = useState(false);
 	const [ignoreWarn, setIgnoreWarn] = useState(false);
 	const [showIgnoreWarnCheck, setShowIgnoreWarnCheck] = useState(false);
@@ -47,6 +48,8 @@ export default function AddActivity({ navigation, route }) {
 			setDuration(data.time.replace(' mins', ''));
 			setDate(new Date(data.date));
 			setShowIgnoreWarnCheck(data.warn);
+		} else {
+			navigation.setOptions({ title: 'Add An Activity' });
 		}
 	}, []);
 
@@ -95,7 +98,7 @@ export default function AddActivity({ navigation, route }) {
 				activity: activity,
 				date: date.toDateString(),
 				time: duration + ' mins',
-				warn: !ignoreWarn,
+				warn: (ignoreWarn) ? false : warn,
 			}, 'activities');
 		} else {
 			const addActivityToDB = await writeToDB({
@@ -142,7 +145,7 @@ export default function AddActivity({ navigation, route }) {
 			/>
 
 			{/* Display the customized DateTimeSelector component */}
-			<DateTimeSelector date={date} setDate={setDate}></DateTimeSelector>
+			<DateTimeSelector date={date} setDate={setDate} showDate={showDate} setShowDate={setShowDate}></DateTimeSelector>
 
 			<View style={styles.bottomContainer}>
 				{showIgnoreWarnCheck &&
@@ -164,6 +167,7 @@ export default function AddActivity({ navigation, route }) {
 					</PressableButton>
 					<PressableButton
 						pressedFunction={() => navigation.goBack()}
+						componentStyle={{backgroundColor : 'red'}}
 					>
 						<Text style={styles.buttonText}>Cancel</Text>
 					</PressableButton>

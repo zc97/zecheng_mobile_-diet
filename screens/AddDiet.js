@@ -37,6 +37,8 @@ export default function AddDiet({ navigation, route }) {
 			setCalories(data.calories);
 			setDate(new Date(data.date));
 			setShowIgnoreWarnCheck(data.warn);
+		} else {
+			navigation.setOptions({ title: 'Add A Diet' });
 		}
 	}, []);
 
@@ -65,7 +67,7 @@ export default function AddDiet({ navigation, route }) {
 				description: description,
 				date: date.toDateString(),
 				calories: calories,
-				warn: !ignoreWarn,
+				warn: (ignoreWarn) ? false : warn,
 			}, 'diet');
 		} else {
 			const addDietToDB = await writeToDB({
@@ -136,6 +138,7 @@ export default function AddDiet({ navigation, route }) {
 						</PressableButton>
 						<PressableButton
 							pressedFunction={() => navigation.goBack()}
+							componentStyle={{backgroundColor : 'red'}}
 						>
 							<Text style={styles.buttonText}>Cancel</Text>
 						</PressableButton>
